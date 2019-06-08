@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class Audio {
-  String id;
-  String name;
-  String description;
-  String url;
-  String category;
-  DateTime dateTime;
-  String userUid;
+  String id; // Firestore id of audio
+  String name; // Name of audio file, as specified by admin
+  String description; // Description as provided by admin
+  String url; // Firebase storage URL of audio
+  String category; // category of Audio, defined by admin
+  DateTime dateTime; // Date and time when the audio was added
+  String userUid; // (Optional) The UID of the user to which the audio was assigned
 
   Audio({
       @required this.id,
@@ -19,6 +19,7 @@ class Audio {
       @required this.userUid
       });
 
+  // Accepts a map and helps in generating an Audio instance
   Audio.fromMap(Map dataMap){
 
     id = dataMap['id'];
@@ -30,6 +31,7 @@ class Audio {
     userUid = dataMap['userUid'];
   }
 
+  // Helper function to convert an Audio instance into a map
   Map<String, dynamic> toMap() {
 
     var audioMap = Map<String, dynamic>();
