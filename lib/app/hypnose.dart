@@ -11,6 +11,7 @@ class _HypnoseAppState extends State<HypnoseApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: Globals.title,
       theme: ThemeData(
         primarySwatch: Colors.cyan
