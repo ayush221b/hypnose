@@ -7,7 +7,7 @@ class User {
   String name; // name of user, to be displayed in app
   String email; // email address of user
   String avatar; // avatarUrl of user
-  bool isAdmin; // is the user admin or not ?
+  String privilege; // the privilige granted to user 
 
   User({
     @required this.uid,
@@ -15,7 +15,7 @@ class User {
     @required this.name,
     @required this.email,
     @required this.avatar,
-    @required this.isAdmin,
+    @required privilege
   });
 
   // Create user instance from map received from firestore
@@ -25,7 +25,7 @@ class User {
     name = dataMap['name'];
     email = dataMap['email'];
     avatar = dataMap['avatar'];
-    isAdmin = dataMap['isAdmin'];
+    privilege = dataMap['privilege'];
   }
 
   // Helper function to create map from user instance
@@ -38,8 +38,8 @@ class User {
     userMap['name'] = name;
     userMap['email'] = email;
     userMap['avatar'] = avatar;
-    userMap['isAdmin'] = isAdmin;
-
+    userMap['privilege'] = privilege;
+    
     return userMap;
   }
 }
