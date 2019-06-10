@@ -23,7 +23,7 @@ class LoginScreenWidget extends StatelessWidget {
             margin: EdgeInsets.all(12.0),
             padding: EdgeInsets.all(8.0),
             child: Text(
-              'hello, welcome to hypnose. \nplease register or login to continue.',
+              'Hello, Welcome to Hypnose. \nPlease register or login to continue.',
               style: TextStyle(
                   fontFamily: 'OpenSans', fontSize: 24.0, color: Colors.white),
             ),

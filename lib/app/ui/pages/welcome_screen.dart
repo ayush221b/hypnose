@@ -5,18 +5,17 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'package:hypnose/app/services/user_service.dart';
 import 'package:hypnose/app/ui/views/welcome_view.dart';
 
 class WelcomeScreen extends StatelessWidget {
+  final UserService userService;
+
+  WelcomeScreen(this.userService);
+
   @override
   Widget build(BuildContext context) {
-    UserService userService = UserService();
-    return ChangeNotifierProvider<UserService>(
-      builder: (BuildContext context) => userService,
-      child: WelcomeView(userService: userService),
-    );
+    return WelcomeView(userService: userService);
   }
 }

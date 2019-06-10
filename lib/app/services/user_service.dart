@@ -118,6 +118,16 @@ class UserService extends ChangeNotifier {
     }
   }
 
+  Future signOut() async {
+    _authStateSubject.add(AuthState.Processing);
+
+    await _auth.signOut();
+
+    _loggedInUser = null;
+
+    updateAuthState();
+  }
+
   void updateAuthState() {
     // Update Auth state accordingly
     if (_loggedInUser != null)
