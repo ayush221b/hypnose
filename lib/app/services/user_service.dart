@@ -9,6 +9,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import 'package:rxdart/subjects.dart';
+
 // User model
 import 'package:hypnose/app/models/user.dart';
 
@@ -31,13 +33,20 @@ class UserService extends ChangeNotifier {
     return _loggedInUser;
   }
 
-  var authState = AuthState.Unauthenticated;
+  PublishSubject<AuthState> _authStateSubject = PublishSubject();
+
+  PublishSubject<AuthState> get authStateSubject {
+    return _authStateSubject;
+  }
+
+  UserService() {
+    _authStateSubject.add(AuthState.Unauthenticated);
+  }
 
   // Method to authenticate user
   Future authenticateUser() async {
-
     // Change auth state to processing
-    authState = AuthState.Processing;
+    _authStateSubject.add(AuthState.Processing);
 
     // Sign in user with google
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
@@ -58,9 +67,9 @@ class UserService extends ChangeNotifier {
 
     // Update Auth state accordingly
     if (_loggedInUser != null)
-      authState = AuthState.Authenticated;
+      _authStateSubject.add(AuthState.Authenticated);
     else
-      authState = AuthState.Unauthenticated;
+      _authStateSubject.add(AuthState.Unauthenticated);
   }
 
   // Check and add user to users collection in firestore
@@ -76,7 +85,7 @@ class UserService extends ChangeNotifier {
     if (results.length == 1)
       userData = results[0].data;
     else {
-      Map userDbEntry = {
+      Map<String, dynamic> userDbEntry = {
         'uid': user.uid,
         'name': user.displayName,
         'email': user.email,

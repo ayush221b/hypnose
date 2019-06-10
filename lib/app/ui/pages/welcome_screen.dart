@@ -13,9 +13,10 @@ import 'package:hypnose/app/ui/views/welcome_view.dart';
 class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    UserService userService = UserService();
     return ChangeNotifierProvider<UserService>(
-      builder: (BuildContext context) => UserService(),
-      child: WelcomeView(),
+      builder: (BuildContext context) => userService,
+      child: WelcomeView(userService: userService),
     );
   }
 }
