@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+// rxdart import to get PublishSubject
 import 'package:rxdart/subjects.dart';
 
 // User model
@@ -35,12 +36,29 @@ class UserService extends ChangeNotifier {
 
   PublishSubject<AuthState> _authStateSubject = PublishSubject();
 
+  // Getter for authState
   PublishSubject<AuthState> get authStateSubject {
     return _authStateSubject;
   }
 
+  // By default the state should be unauthenticated when the service is initialized
   UserService() {
     _authStateSubject.add(AuthState.Unauthenticated);
+  }
+
+  // Check if a user login is already present and auto-authenticate
+  Future autoAuthenticateUser() async {
+    // Change auth state to processing
+    _authStateSubject.add(AuthState.Processing);
+
+    FirebaseUser user = await _auth.currentUser();
+
+    if (user != null) {
+      await processFirestoreEntryOfUser(user);
+    }
+
+    // Update authState
+    updateAuthState();
   }
 
   // Method to authenticate user
@@ -65,11 +83,7 @@ class UserService extends ChangeNotifier {
     // Check and add user into firestore users collection
     await processFirestoreEntryOfUser(user);
 
-    // Update Auth state accordingly
-    if (_loggedInUser != null)
-      _authStateSubject.add(AuthState.Authenticated);
-    else
-      _authStateSubject.add(AuthState.Unauthenticated);
+    updateAuthState();
   }
 
   // Check and add user to users collection in firestore
@@ -102,5 +116,13 @@ class UserService extends ChangeNotifier {
       _loggedInUser = User.fromMap(userData);
       notifyListeners();
     }
+  }
+
+  void updateAuthState() {
+    // Update Auth state accordingly
+    if (_loggedInUser != null)
+      _authStateSubject.add(AuthState.Authenticated);
+    else
+      _authStateSubject.add(AuthState.Unauthenticated);
   }
 }

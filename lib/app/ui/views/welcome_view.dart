@@ -6,7 +6,8 @@ import 'package:hypnose/app/services/user_service.dart';
 import 'package:provider/provider.dart';
 
 class WelcomeView extends StatefulWidget {
-  final UserService userService;
+  final UserService
+      userService; // Get previously initialized userService instance
 
   WelcomeView({this.userService});
 
@@ -15,12 +16,14 @@ class WelcomeView extends StatefulWidget {
 }
 
 class _WelcomeViewState extends State<WelcomeView> {
-  Widget viewWidget = LoginScreenWidget();
+  // The initial view is the LoadingScreen
+  Widget viewWidget = LoadingScreenWidget();
 
   @override
   initState() {
     super.initState();
 
+    // Listen to changes in authState and react accordingly
     this.widget.userService.authStateSubject.listen((AuthState authState) {
       print(authState);
       if (authState == AuthState.Unauthenticated) {
@@ -32,9 +35,13 @@ class _WelcomeViewState extends State<WelcomeView> {
           viewWidget = LoadingScreenWidget();
         });
       } else {
+        // Navigate to the home switcher page if authState is authenticated.
         Navigator.pushNamed(context, '/home');
       }
     });
+
+    // Attempt to auto-authenticate user
+    this.widget.userService.autoAuthenticateUser();
   }
 
   @override
@@ -45,6 +52,7 @@ class _WelcomeViewState extends State<WelcomeView> {
   }
 }
 
+// Loading Screen presented while authState is Processing
 class LoadingScreenWidget extends StatelessWidget {
   const LoadingScreenWidget({
     Key key,
@@ -77,6 +85,7 @@ class LoadingScreenWidget extends StatelessWidget {
   }
 }
 
+// Login Screen presented while authState is unauthenticated
 class LoginScreenWidget extends StatelessWidget {
   const LoginScreenWidget({
     Key key,
