@@ -45,6 +45,13 @@ class _WelcomeViewState extends State<WelcomeView> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+
+    this.widget.userService.authStateSubject.close();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: viewWidget,

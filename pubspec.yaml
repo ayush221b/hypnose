@@ -43,6 +43,9 @@ dependencies:
   # Helps with Reactive programming
   rxdart: ^0.22.0
 
+  # For recording and playing audio
+  flutter_sound: ^1.0.6
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
