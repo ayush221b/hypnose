@@ -46,6 +46,7 @@ dependencies:
   # For recording and playing audio
   flutter_sound: ^1.0.6
 
+  # To use internationalised formats
   intl: ^0.15.8
 
 dev_dependencies:
