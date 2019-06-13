@@ -31,8 +31,11 @@ dependencies:
   # Firebase Cloud Firestore
   cloud_firestore: ^0.12.3
 
+  # For cloud storage of content
+  firebase_storage: ^3.0.1
+
   # For Network Interaction
-  http: ^0.12.0+2
+  #http: ^0.12.0+2
 
   # For state management
   provider: ^3.0.0
@@ -45,6 +48,9 @@ dependencies:
 
   # For recording and playing audio
   flutter_sound: ^1.0.6
+
+  # Cache network images offline
+  cached_network_image: ^0.8.0
 
   # To use internationalised formats
   intl: ^0.15.8

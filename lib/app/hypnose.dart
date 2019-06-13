@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hypnose/app/services/audio_util_service.dart';
 import 'package:hypnose/app/services/user_service.dart';
 import 'package:hypnose/app/static/globals.dart';
 import 'package:hypnose/app/ui/pages/audio_create.dart';
@@ -12,25 +13,36 @@ class HypnoseApp extends StatefulWidget {
 }
 
 class _HypnoseAppState extends State<HypnoseApp> {
+  UserService _userService;
+  AudioUtilService _audioUtilService;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _userService = UserService();
+    _audioUtilService = AudioUtilService();
+  }
+
   @override
   Widget build(BuildContext context) {
-    UserService userService = UserService();
-
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<UserService>.value(
-          value: userService,
+        ChangeNotifierProvider<UserService>(
+          builder: (_) => _userService,
         ),
+        ChangeNotifierProvider<AudioUtilService>(
+          builder: (_) => _audioUtilService,
+        )
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: Globals.title,
-          theme: ThemeData(primarySwatch: Colors.cyan),
+          theme: ThemeData(primarySwatch: Colors.teal),
           darkTheme: ThemeData.dark(),
           initialRoute: '/',
           routes: {
-            // '/': (BuildContext context) => WelcomeScreen(userService),
-            '/': (BuildContext context) => AudioCreateScreen(),
+            '/': (BuildContext context) => WelcomeScreen(_userService),
             '/home': (BuildContext context) => HomePageSwitcher(),
             '/audiocreate': (BuildContext context) => AudioCreateScreen()
           }),
