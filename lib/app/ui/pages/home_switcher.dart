@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hypnose/app/services/user_service.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -12,33 +13,64 @@ class HomePageSwitcher extends StatelessWidget {
     return Consumer<UserService>(
       builder: (BuildContext context, UserService userService, Widget child) {
         return Scaffold(
-            appBar: AppBar(),
-            drawer: Drawer(
-              child: Column(
-                children: <Widget>[
-                  UserAccountsDrawerHeader(
-                    accountEmail: Text(userService.loggedInUser.email),
-                    accountName: Text(userService.loggedInUser.name),
-                    currentAccountPicture: CachedNetworkImage(
-                      imageUrl: userService.loggedInUser.avatar,
-                      placeholder: (context, url) =>
-                          new CircularProgressIndicator(),
-                      errorWidget: (context, url, error) =>
-                          new Icon(Icons.error),
-                    ),
-                  )
-                ],
-              ),
+          appBar: AppBar(),
+          drawer: Drawer(
+            child: Column(
+              children: <Widget>[
+                UserAccountsDrawerHeader(
+                  accountEmail: Text(userService.loggedInUser.email),
+                  accountName: Text(userService.loggedInUser.name),
+                  currentAccountPicture: CachedNetworkImage(
+                    imageUrl: userService.loggedInUser.avatar,
+                    placeholder: (context, url) =>
+                        new CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => new Icon(Icons.error),
+                  ),
+                ),
+                ListTile(
+                  leading: Icon(FontAwesomeIcons.userAstronaut),
+                  title: Text(
+                    'My Profile',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+                ListTile(
+                  leading: Icon(FontAwesomeIcons.userFriends),
+                  title: Text(
+                    'Appointments',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+                ListTile(
+                  onTap: () => Navigator.pushNamed(context, '/audiocreate'),
+                  leading: Icon(FontAwesomeIcons.microphone),
+                  title: Text(
+                    'Audios',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+                ListTile(
+                  leading: Icon(FontAwesomeIcons.images),
+                  title: Text(
+                    'Pictures',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+                ListTile(
+                  onTap: () async {
+                    await userService.signOut();
+                    Navigator.pushNamed(context, '/');
+                  },
+                  leading: Icon(FontAwesomeIcons.signOutAlt),
+                  title: Text(
+                    'Sign Out',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                )
+              ],
             ),
-            body: Center(
-              child: RaisedButton(
-                child: Text('Sign out'),
-                onPressed: () async {
-                  await userService.signOut();
-                  Navigator.pushNamed(context, '/');
-                },
-              ),
-            ));
+          ),
+        );
       },
     );
   }

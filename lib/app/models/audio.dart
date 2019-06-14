@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Audio {
   String id; // Firestore id of audio
-  String name; // Name of audio file, as specified by admin
+  String title; // title of audio file, as specified by admin
   String description; // Description as provided by admin
   String url; // Firebase storage URL of audio
   String category; // category of Audio, defined by admin
@@ -11,7 +11,7 @@ class Audio {
 
   Audio({
       @required this.id,
-      @required this.name,
+      @required this.title,
       @required this.description,
       @required this.url,
       @required this.category,
@@ -23,7 +23,7 @@ class Audio {
   Audio.fromMap(Map dataMap){
 
     id = dataMap['id'];
-    name = dataMap['name'];
+    title = dataMap['title'];
     description = dataMap['description'];
     url = dataMap['url'];
     category = dataMap['category'];
@@ -37,7 +37,7 @@ class Audio {
     var audioMap = Map<String, dynamic>();
 
     audioMap['id'] = id;
-    audioMap['name'] = name;
+    audioMap['title'] = title;
     audioMap['description'] = description;
     audioMap['url'] = url;
     audioMap['category'] = category;
