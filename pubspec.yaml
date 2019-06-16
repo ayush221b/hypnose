@@ -55,6 +55,9 @@ dependencies:
   # To use internationalised formats
   intl: ^0.15.8
 
+  # To pick files from System
+  file_picker: ^1.3.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

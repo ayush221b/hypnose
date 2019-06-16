@@ -32,6 +32,15 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+	<string>fetch</string>
+	<string>remote-notification</string>
+	</array>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>In order to allow the app to select audio files, for uploading to our server.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To select and pick image files for remote upload by the user.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This sample uses the microphone to record your speech and convert it to text.</string>
 	<key>UIBackgroundModes</key>

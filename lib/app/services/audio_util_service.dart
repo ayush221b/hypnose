@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'dart:io';
+import 'dart:math';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/widgets.dart';
+import 'package:path_provider/path_provider.dart';
 
 // Import DateFormat from intl package
 import 'package:intl/intl.dart' show DateFormat;
@@ -14,10 +18,10 @@ class AudioUtilService extends ChangeNotifier {
   FlutterSound flutterSound = new FlutterSound();
 
   // Store the path of the recorded audio file
-  String _recordedAudioPath;
+  String _audioFilePath;
 
   String get recordedAudioPath {
-    return _recordedAudioPath;
+    return _audioFilePath;
   }
 
   // Boolean to check if audio is recording
@@ -27,19 +31,11 @@ class AudioUtilService extends ChangeNotifier {
     return _isRecording;
   }
 
-  set isRecording(bool isRecording) {
-    _isRecording = isRecording;
-  }
-
   // Boolean to check if audio is playing
   bool _isPlaying = false;
 
   bool get isPlaying {
     return _isPlaying;
-  }
-
-  set isPlaying(bool isPlaying) {
-    _isPlaying = isPlaying;
   }
 
 
@@ -68,7 +64,10 @@ class AudioUtilService extends ChangeNotifier {
     _isRecording = true;
     notifyListeners();
 
-    String path = await flutterSound.startRecorder(null);
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    var random = Random.secure();
+    String audioFileName = random.nextInt(100000).toString();
+    String path = await flutterSound.startRecorder('${appDocDir.path}/$audioFileName.m4a');
     print('startRecorder: $path');
 
     _recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
@@ -89,7 +88,7 @@ class AudioUtilService extends ChangeNotifier {
       _recorderSubscription = null;
     }
 
-    _recordedAudioPath = result;
+    _audioFilePath = result;
     _isRecording = false;
     _recordedAudioPosition = null;
     notifyListeners();
@@ -138,5 +137,17 @@ class AudioUtilService extends ChangeNotifier {
     await flutterSound.resumePlayer();
     _isPlaying = true;
     notifyListeners();
+  }
+
+  // Pick Audio File from System
+  Future pickAudiofromDevice() async {
+
+    String filePath;
+
+    filePath = await FilePicker.getFilePath(type: FileType.AUDIO);
+
+    if(filePath != null) {
+      _audioFilePath = filePath;
+    }
   }
 }
