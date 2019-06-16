@@ -6,7 +6,8 @@ class AudioCreateView extends StatefulWidget {
 }
 
 class _AudioCreateViewState extends State<AudioCreateView> {
-  bool _isSwitched = false;
+  bool _isSwitchedAssignTo = false;
+  bool _isSwitchedAudioSource = false;
 
   PageController _controller = PageController();
 
@@ -89,6 +90,7 @@ class _AudioCreateViewState extends State<AudioCreateView> {
           // Next Page
           SingleChildScrollView(
             child: Column(
+              
               children: <Widget>[
                 Container(
                   margin:
@@ -98,10 +100,10 @@ class _AudioCreateViewState extends State<AudioCreateView> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Switch(
-                        value: _isSwitched,
+                        value: _isSwitchedAssignTo,
                         onChanged: (bool value) {
                           setState(() {
-                            _isSwitched = value;
+                            _isSwitchedAssignTo = value;
                           });
                         },
                         inactiveThumbColor: Colors.blue,
@@ -109,13 +111,140 @@ class _AudioCreateViewState extends State<AudioCreateView> {
                       ),
                       Container(
                         padding: EdgeInsets.only(right: 20),
-                        child: _isSwitched
-                            ? Text('Assign a Category', style: TextStyle(fontSize: 20),)
-                            : Text('Assign a User', style: TextStyle(fontSize: 20),),
+                        child: _isSwitchedAssignTo
+                            ? Text(
+                                'Assign a Category',
+                                style: TextStyle(fontSize: 20),
+                              )
+                            : Text(
+                                'Assign a User',
+                                style: TextStyle(fontSize: 20),
+                              ),
                       )
                     ],
                   ),
-                )
+                ),
+                Container(
+                  margin:
+                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+                  padding: EdgeInsets.all(8.0),
+                  child:TextField(
+                    decoration:
+                        InputDecoration(labelText: 'Start Typing the Name'),
+                  )
+                ),
+                Container(
+                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                padding: EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0)),
+                      color: Theme.of(context).primaryColor,
+                      onPressed: () {
+                        _controller.previousPage(
+                            curve: Curves.easeInOut,
+                            duration: Duration(milliseconds: 100));
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.arrow_left,
+                                color: Colors.white,
+                                size: 25,
+                              ),
+                              Text(
+                                'Go Back',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              
+                            ],
+                          )),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                padding: EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0)),
+                      color: Theme.of(context).primaryColor,
+                      onPressed: () {
+                        _controller.nextPage(
+                            curve: Curves.easeInOut,
+                            duration: Duration(milliseconds: 100));
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              
+                              Text(
+                                'Continue',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              Icon(
+                                Icons.arrow_right,
+                                color: Colors.white,
+                                size: 25,
+                              ),
+                            ],
+                          )),
+                    )
+                  ],
+                ),
+              )
+              ],
+            ),
+          ),
+          SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  margin:
+                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Switch(
+                        value: _isSwitchedAudioSource,
+                        onChanged: (bool value) {
+                          setState(() {
+                            _isSwitchedAudioSource = value;
+                          });
+                        },
+                        inactiveThumbColor: Colors.blue,
+                        inactiveTrackColor: Colors.cyan,
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(right: 20),
+                        child: _isSwitchedAudioSource
+                            ? Text(
+                                'Choose an Audio File',
+                                style: TextStyle(fontSize: 20),
+                              )
+                            : Text(
+                                'Record Audio',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                      )
+                    ],
+                  ),
+                ),
               ],
             ),
           )
