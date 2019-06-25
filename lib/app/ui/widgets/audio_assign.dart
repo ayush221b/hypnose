@@ -28,6 +28,13 @@ class _AudiocategoryUserAssignPageState
                     fontSize: 20, color: Theme.of(context).primaryColor)),
           ),
           Container(
+                  margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 8.0),
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Assign a Category or a User',
+                    style: TextStyle(fontFamily: 'OpenSans', fontSize: 20),
+                  )),
+          Container(
             margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
             padding: EdgeInsets.all(8.0),
             child: Row(

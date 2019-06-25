@@ -35,7 +35,7 @@ class PageMoveButton extends StatelessWidget {
                   children: <Widget>[
                     if (!isContinue)
                       Icon(
-                        Icons.arrow_right,
+                        !isContinue ? Icons.arrow_left : Icons.arrow_right,
                         color: Colors.white,
                         size: 25,
                       ),

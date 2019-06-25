@@ -1,27 +1,28 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:math';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/widgets.dart';
-import 'package:path_provider/path_provider.dart';
 
-// Import DateFormat from intl package
-import 'package:intl/intl.dart' show DateFormat;
-
-// Import Flutter Sound module
-import 'package:flutter_sound/flutter_sound.dart';
+// Import the Audio player and Audio recorder modules
+import 'package:audioplayers/audioplayers.dart';
+import 'package:audio_recorder/audio_recorder.dart';
 
 class AudioUtilService extends ChangeNotifier {
-
-  // Create instance of the flutter sound package
-  FlutterSound flutterSound = new FlutterSound();
+  // Create instance of the audioplayers package
+  AudioPlayer audioPlayer = AudioPlayer();
 
   // Store the path of the recorded audio file
   String _audioFilePath;
 
   String get recordedAudioPath {
     return _audioFilePath;
+  }
+
+  // Store the message for Audio player as per audio source
+  String _playerMessage;
+
+  String get playerMessage {
+    return _playerMessage;
   }
 
   // Boolean to check if audio is recording
@@ -38,116 +39,80 @@ class AudioUtilService extends ChangeNotifier {
     return _isPlaying;
   }
 
-
-  // subscribe to the audio recording stream
-  StreamSubscription _recorderSubscription;
-
-  // stores the recorded audio position text
-  String _recordedAudioPosition;
-
-  String get recordedAudioPosition {
-    return _recordedAudioPosition;
-  }
-
-  // subscribe to audio playback stream
-  StreamSubscription _playerSubscription;
-
-  // stores the current position text of audio playback
-  String _playerAudioPosition;
-
-  String get playerAudioPosition {
-    return _playerAudioPosition;
-  }
-
   // function to initiate audio recording
   Future startAudioRecorder() async {
     _isRecording = true;
     notifyListeners();
 
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    var random = Random.secure();
-    String audioFileName = random.nextInt(100000).toString();
-    String path = await flutterSound.startRecorder('${appDocDir.path}/$audioFileName.m4a');
-    print('startRecorder: $path');
+    // Check permissions before starting
+    bool hasPermissions = await AudioRecorder.hasPermissions;
 
-    _recorderSubscription = flutterSound.onRecorderStateChanged.listen((e) {
-      DateTime date =
-          new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
-      _recordedAudioPosition = DateFormat('mm:ss:SS', 'en_US').format(date);
-      notifyListeners();
-    });
+    // Get the state of the recorder
+    bool isRecording = await AudioRecorder.isRecording;
+
+    // Start recording
+    if (hasPermissions && !isRecording) await AudioRecorder.start();
   }
 
   // function to stop audio recording
   Future stopAudioRecording() async {
-    String result = await flutterSound.stopRecorder();
-    print('stopRecorder: $result');
-
-    if (_recorderSubscription != null) {
-      _recorderSubscription.cancel();
-      _recorderSubscription = null;
-    }
-
-    _audioFilePath = result;
+    Recording recording = await AudioRecorder.stop();
+    print(
+        "Path : ${recording.path},  Format : ${recording.audioOutputFormat},  Duration : ${recording.duration},  Extension : ${recording.extension},");
+    _audioFilePath = recording.path;
     _isRecording = false;
-    _recordedAudioPosition = null;
+    _playerMessage = "Play recorded audio";
     notifyListeners();
   }
 
   // start playback of audio from @param uri
   Future startAudioPlayback(String uri) async {
-    await flutterSound.startPlayer(uri);
+    _isPlaying = true;
+    notifyListeners();
 
-    _playerSubscription = flutterSound.onPlayerStateChanged.listen((e) {
-      if (e != null) {
-        DateTime date =
-            new DateTime.fromMillisecondsSinceEpoch(e.currentPosition.toInt());
-        String txt = DateFormat('mm:ss:SS', 'en_US').format(date);
+    await audioPlayer.play(uri, isLocal: true);
 
+    audioPlayer.onPlayerStateChanged.listen((AudioPlayerState s) {
+      print('Current player state: $s');
+      if (s == AudioPlayerState.PLAYING)
         _isPlaying = true;
-        _playerAudioPosition = txt.substring(0, 8);
-        notifyListeners();
-      }
+      else
+        _isPlaying = false;
+      notifyListeners();
     });
   }
 
   // stop audio playback
   Future stopAudioPlayback() async {
-    await flutterSound.stopPlayer();
-
-    if (_playerSubscription != null) {
-      _playerSubscription.cancel();
-      _playerSubscription = null;
-    }
-
+    await audioPlayer.stop();
     _isPlaying = false;
-    _playerAudioPosition = null;
     notifyListeners();
   }
 
   // pause audio playback
   Future pauseAudioPlayback() async {
-    await flutterSound.pausePlayer();
+    await audioPlayer.pause();
     _isPlaying = false;
     notifyListeners();
   }
 
   // resume audio playback
   Future resumeAudioPlayback() async {
-    await flutterSound.resumePlayer();
+    await audioPlayer.resume();
     _isPlaying = true;
     notifyListeners();
   }
 
   // Pick Audio File from System
   Future pickAudiofromDevice() async {
-
     String filePath;
 
     filePath = await FilePicker.getFilePath(type: FileType.AUDIO);
 
-    if(filePath != null) {
+    if (filePath != null) {
       _audioFilePath = filePath;
+      _playerMessage = "Play selected audio";
+      notifyListeners();
     }
   }
 }

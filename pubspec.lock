@@ -8,6 +8,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.0"
+  audio_recorder:
+    dependency: "direct main"
+    description:
+      path: "../audio_recorder"
+      relative: true
+    source: path
+    version: "0.0.6"
+  audioplayers:
+    dependency: "direct main"
+    description:
+      name: audioplayers
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.11.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -64,6 +78,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
+  file:
+    dependency: transitive
+    description:
+      name: file
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.0.8+1"
   file_picker:
     dependency: "direct main"
     description:
@@ -104,13 +125,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.2"
-  flutter_sound:
+  flutter_spinkit:
     dependency: "direct main"
     description:
-      name: flutter_sound
+      name: flutter_spinkit
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.1"
+    version: "3.1.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter

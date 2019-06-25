@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hypnose/app/services/audio_util_service.dart';
 import 'package:hypnose/app/ui/widgets/page_move_button.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class AudioPickRecordPage extends StatefulWidget {
   final PageController controller;
@@ -23,7 +24,22 @@ class _AudioPickRecordPageState extends State<AudioPickRecordPage> {
           Widget child) {
         return SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                padding: EdgeInsets.all(8),
+                child: Text('Step 3',
+                    style: TextStyle(
+                        fontSize: 20, color: Theme.of(context).primaryColor)),
+              ),
+              Container(
+                  margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 8.0),
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Choose an Audio File or Record Audio',
+                    style: TextStyle(fontFamily: 'OpenSans', fontSize: 20),
+                  )),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
                 padding: EdgeInsets.all(8.0),
@@ -55,7 +71,65 @@ class _AudioPickRecordPageState extends State<AudioPickRecordPage> {
                   ],
                 ),
               ),
-              buildGetAudioButton(context, audioUtilService),
+              audioUtilService.isRecording
+                  ? buildRecordingConsole(context, audioUtilService)
+                  : buildGetAudioButton(context, audioUtilService),
+              if (audioUtilService.recordedAudioPath != null)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(12)),
+                      padding: EdgeInsets.all(15),
+                      margin: EdgeInsets.all(20),
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Text(
+                                '${audioUtilService.playerMessage ?? ''}',
+                                style: TextStyle(color: Colors.white, fontSize: 16),
+                              ),
+                              if (!audioUtilService.isPlaying)
+                                IconButton(
+                                  onPressed: () async {
+                                    await audioUtilService.startAudioPlayback(
+                                        audioUtilService.recordedAudioPath);
+                                  },
+                                  icon: Icon(
+                                    Icons.play_arrow,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              else
+                                IconButton(
+                                  onPressed: () async {
+                                    await audioUtilService.pauseAudioPlayback();
+                                  },
+                                  icon: Icon(
+                                    Icons.pause,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              IconButton(
+                                onPressed: () async {
+                                  await audioUtilService.stopAudioPlayback();
+                                },
+                                icon: Icon(
+                                  Icons.stop,
+                                  color: Colors.white,
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               PageMoveButton(
                 controller: this.widget.controller,
                 isContinue: false,
@@ -67,9 +141,56 @@ class _AudioPickRecordPageState extends State<AudioPickRecordPage> {
     );
   }
 
-  Widget buildGetAudioButton(
-      BuildContext context, AudioUtilService audioUtilsService) {
+  Container buildRecordingConsole(
+      BuildContext context, AudioUtilService audioUtilService) {
     return Container(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              SpinKitRipple(
+                color: Colors.teal,
+                size: 50,
+              ),
+              Text(
+                'Now Recording',
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: RaisedButton.icon(
+              color: Theme.of(context).primaryColor,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              onPressed: () async {
+                await audioUtilService.stopAudioRecording();
+              },
+              icon: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.stop,
+                  color: Colors.white,
+                ),
+              ),
+              label: Text(
+                'Stop Recording',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildGetAudioButton(
+      BuildContext context, AudioUtilService audioUtilService) {
+    return Container(
+      alignment: Alignment.center,
       child: RaisedButton.icon(
         color: Theme.of(context).primaryColor,
         shape:
@@ -82,14 +203,18 @@ class _AudioPickRecordPageState extends State<AudioPickRecordPage> {
                   : FontAwesomeIcons.microphoneAlt,
               color: Colors.white),
         ),
-        onPressed: () {},
+        onPressed: () async {
+          _shouldPickFromPhone
+              ? await audioUtilService.pickAudiofromDevice()
+              : await audioUtilService.startAudioRecorder();
+        },
         label: Padding(
           padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5),
-          child: Text(
-              _shouldPickFromPhone ? 'Choose Audio File' : 'Start Recording',
-              style: TextStyle(
-                color: Colors.white,
-              )),
+          child:
+              Text(_shouldPickFromPhone ? 'Choose Audio File' : 'Record Audio',
+                  style: TextStyle(
+                    color: Colors.white,
+                  )),
         ),
       ),
     );
