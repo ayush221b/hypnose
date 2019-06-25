@@ -22,9 +22,8 @@ class HomePageSwitcher extends StatelessWidget {
                   accountName: Text(userService.loggedInUser.name),
                   currentAccountPicture: CachedNetworkImage(
                     imageUrl: userService.loggedInUser.avatar,
-                    placeholder: (context, url) =>
-                        new CircularProgressIndicator(),
-                    errorWidget: (context, url, error) => new Icon(Icons.error),
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
                 ),
                 ListTile(

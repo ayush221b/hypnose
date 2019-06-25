@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hypnose/app/ui/widgets/page_move_button.dart';
 
 class AudiocategoryUserAssignPage extends StatefulWidget {
   final PageController controller;
@@ -17,7 +18,15 @@ class _AudiocategoryUserAssignPageState
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            padding: EdgeInsets.all(8),
+            child: Text('Step 2',
+                style: TextStyle(
+                    fontSize: 20, color: Theme.of(context).primaryColor)),
+          ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
             padding: EdgeInsets.all(8.0),
@@ -55,78 +64,14 @@ class _AudiocategoryUserAssignPageState
               child: TextField(
                 decoration: InputDecoration(labelText: 'Start Typing the Name'),
               )),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-            padding: EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)),
-                  color: Theme.of(context).primaryColor,
-                  onPressed: () {
-                    this.widget.controller.previousPage(
-                        curve: Curves.easeInOut,
-                        duration: Duration(milliseconds: 100));
-                  },
-                  child: Container(
-                      padding: EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                            Icons.arrow_left,
-                            color: Colors.white,
-                            size: 25,
-                          ),
-                          Text(
-                            'Go Back',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ],
-                      )),
-                )
-              ],
-            ),
+          PageMoveButton(
+            controller: this.widget.controller,
+            isContinue: true,
           ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-            padding: EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)),
-                  color: Theme.of(context).primaryColor,
-                  onPressed: () {
-                    this.widget.controller.nextPage(
-                        curve: Curves.easeInOut,
-                        duration: Duration(milliseconds: 100));
-                  },
-                  child: Container(
-                      padding: EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            'Continue',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Icon(
-                            Icons.arrow_right,
-                            color: Colors.white,
-                            size: 25,
-                          ),
-                        ],
-                      )),
-                )
-              ],
-            ),
-          )
+          PageMoveButton(
+            controller: this.widget.controller,
+            isContinue: false,
+          ),
         ],
       ),
     );

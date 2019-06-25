@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hypnose/app/ui/widgets/page_move_button.dart';
 
 class AudioTitleDescriptionPage extends StatelessWidget {
   const AudioTitleDescriptionPage({
@@ -14,7 +15,15 @@ class AudioTitleDescriptionPage extends StatelessWidget {
     return SingleChildScrollView(
         child: Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          padding: EdgeInsets.all(8),
+          child: Text('Step 1',
+              style: TextStyle(
+                  fontSize: 20, color: Theme.of(context).primaryColor)),
+        ),
         Container(
             margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 8.0),
             padding: EdgeInsets.all(8.0),
@@ -35,41 +44,9 @@ class AudioTitleDescriptionPage extends StatelessWidget {
               maxLines: 4,
               decoration: InputDecoration(labelText: 'Description of Audio'),
             )),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
-          padding: EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0)),
-                color: Theme.of(context).primaryColor,
-                onPressed: () {
-                  _controller.nextPage(
-                      curve: Curves.easeInOut,
-                      duration: Duration(milliseconds: 100));
-                },
-                child: Container(
-                    padding: EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          'Continue',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Icon(
-                          Icons.arrow_right,
-                          color: Colors.white,
-                          size: 25,
-                        )
-                      ],
-                    )),
-              )
-            ],
-          ),
+        PageMoveButton(
+          controller: _controller,
+          isContinue: true,
         )
       ],
     ));
