@@ -14,8 +14,18 @@ class AudioUtilService extends ChangeNotifier {
   // Store the path of the recorded audio file
   String _audioFilePath;
 
-  String get recordedAudioPath {
+  String get audioFilePath {
     return _audioFilePath;
+  }
+
+  // Map to store all details of audio
+  Map<String, dynamic> _audioMap = {};
+
+  Map<String, dynamic> get audioMap => _audioMap;
+
+  set audioMap(Map<String, dynamic> newMap) {
+    _audioMap = newMap;
+    notifyListeners();
   }
 
   // Store the message for Audio player as per audio source

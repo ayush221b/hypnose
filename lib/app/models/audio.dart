@@ -8,6 +8,7 @@ class Audio {
   String category; // category of Audio, defined by admin
   DateTime dateTime; // Date and time when the audio was added
   String userUid; // (Optional) The UID of the user to which the audio was assigned
+  String uploaderUid; // UID of the admin who uploaded the file
 
   Audio({
       @required this.id,
@@ -16,7 +17,8 @@ class Audio {
       @required this.url,
       @required this.category,
       @required this.dateTime,
-      @required this.userUid
+      @required this.userUid,
+      @required this.uploaderUid
       });
 
   // Accepts a map and helps in generating an Audio instance
@@ -26,9 +28,10 @@ class Audio {
     title = dataMap['title'];
     description = dataMap['description'];
     url = dataMap['url'];
-    category = dataMap['category'];
+    category = dataMap['category'] ?? null;
     dateTime = DateTime.parse(dataMap['dateTime']);
-    userUid = dataMap['userUid'];
+    userUid = dataMap['userUid'] ?? null;
+    uploaderUid = dataMap['uploaderUid'];
   }
 
   // Helper function to convert an Audio instance into a map
@@ -40,9 +43,10 @@ class Audio {
     audioMap['title'] = title;
     audioMap['description'] = description;
     audioMap['url'] = url;
-    audioMap['category'] = category;
+    audioMap['category'] = category ?? null;
     audioMap['dateTime'] = dateTime.toString();
-    audioMap['userUid'] = userUid;
+    audioMap['userUid'] = userUid ?? null;
+    audioMap['uploaderUid'] = uploaderUid;
 
     return audioMap;
   }

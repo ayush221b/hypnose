@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 class PageMoveButton extends StatelessWidget {
   final PageController controller;
   final bool isContinue;
+  final Function specialFunction;
 
-  PageMoveButton({this.controller, this.isContinue = true});
+  PageMoveButton(
+      {this.controller, this.isContinue = true, this.specialFunction});
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +21,11 @@ class PageMoveButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(30.0)),
             color: Theme.of(context).primaryColor,
             onPressed: () {
-              isContinue
-                  ? controller.nextPage(
-                      curve: Curves.easeInOut,
-                      duration: Duration(milliseconds: 500))
-                  : controller.previousPage(
-                      curve: Curves.easeInOut,
-                      duration: Duration(milliseconds: 500));
+              if (specialFunction != null) {
+                bool canProceed = specialFunction();
+                if (canProceed) navigatePage();
+              }
+              else navigatePage();
             },
             child: Container(
                 padding: EdgeInsets.all(8.0),
@@ -55,5 +55,13 @@ class PageMoveButton extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void navigatePage() {
+    isContinue
+        ? controller.nextPage(
+            curve: Curves.easeInOut, duration: Duration(milliseconds: 500))
+        : controller.previousPage(
+            curve: Curves.easeInOut, duration: Duration(milliseconds: 500));
   }
 }

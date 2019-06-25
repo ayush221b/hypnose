@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hypnose/app/services/host_service.dart';
 import 'package:hypnose/app/services/audio_util_service.dart';
 import 'package:hypnose/app/services/user_service.dart';
 import 'package:hypnose/app/static/globals.dart';
@@ -15,6 +16,7 @@ class HypnoseApp extends StatefulWidget {
 class _HypnoseAppState extends State<HypnoseApp> {
   UserService _userService;
   AudioUtilService _audioUtilService;
+  HostService _hostService;
 
   @override
   void initState() {
@@ -22,6 +24,7 @@ class _HypnoseAppState extends State<HypnoseApp> {
 
     _userService = UserService();
     _audioUtilService = AudioUtilService();
+    _hostService = HostService();
   }
 
   @override
@@ -33,6 +36,9 @@ class _HypnoseAppState extends State<HypnoseApp> {
         ),
         ChangeNotifierProvider<AudioUtilService>(
           builder: (_) => _audioUtilService,
+        ),
+        ChangeNotifierProvider<HostService>(
+          builder: (_) => _hostService,
         )
       ],
       child: MaterialApp(

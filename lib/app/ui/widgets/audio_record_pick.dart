@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hypnose/app/services/host_service.dart';
 import 'package:hypnose/app/services/audio_util_service.dart';
+import 'package:hypnose/app/services/user_service.dart';
+import 'package:hypnose/app/ui/widgets/min_audio_player_console.dart';
 import 'package:hypnose/app/ui/widgets/page_move_button.dart';
+import 'package:hypnose/app/ui/widgets/upload_fire.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -74,62 +78,12 @@ class _AudioPickRecordPageState extends State<AudioPickRecordPage> {
               audioUtilService.isRecording
                   ? buildRecordingConsole(context, audioUtilService)
                   : buildGetAudioButton(context, audioUtilService),
-              if (audioUtilService.recordedAudioPath != null)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.circular(12)),
-                      padding: EdgeInsets.all(15),
-                      margin: EdgeInsets.all(20),
-                      child: Column(
-                        children: <Widget>[
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Text(
-                                '${audioUtilService.playerMessage ?? ''}',
-                                style: TextStyle(color: Colors.white, fontSize: 16),
-                              ),
-                              if (!audioUtilService.isPlaying)
-                                IconButton(
-                                  onPressed: () async {
-                                    await audioUtilService.startAudioPlayback(
-                                        audioUtilService.recordedAudioPath);
-                                  },
-                                  icon: Icon(
-                                    Icons.play_arrow,
-                                    color: Colors.white,
-                                  ),
-                                )
-                              else
-                                IconButton(
-                                  onPressed: () async {
-                                    await audioUtilService.pauseAudioPlayback();
-                                  },
-                                  icon: Icon(
-                                    Icons.pause,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              IconButton(
-                                onPressed: () async {
-                                  await audioUtilService.stopAudioPlayback();
-                                },
-                                icon: Icon(
-                                  Icons.stop,
-                                  color: Colors.white,
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+              if (audioUtilService.audioFilePath != null)
+                MinAudioPlayerConsole(
+                  audioUtilService: audioUtilService,
                 ),
+              if (audioUtilService.audioFilePath != null)
+                UploadFireWidget(),
               PageMoveButton(
                 controller: this.widget.controller,
                 isContinue: false,
