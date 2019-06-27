@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hypnose/app/routes/route_manager.dart';
 import 'package:hypnose/app/services/host_service.dart';
 import 'package:hypnose/app/services/audio_util_service.dart';
 import 'package:hypnose/app/services/user_service.dart';
@@ -47,11 +48,7 @@ class _HypnoseAppState extends State<HypnoseApp> {
           theme: ThemeData(primarySwatch: Colors.teal),
           darkTheme: ThemeData.dark(),
           initialRoute: '/',
-          routes: {
-            '/': (BuildContext context) => WelcomeScreen(_userService),
-            '/home': (BuildContext context) => HomePageSwitcher(),
-            '/audiocreate': (BuildContext context) => AudioCreateScreen()
-          }),
+          routes: buildNamedRoutes()),
     );
   }
 }
