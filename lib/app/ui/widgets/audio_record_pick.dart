@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hypnose/app/services/host_service.dart';
 import 'package:hypnose/app/services/audio_util_service.dart';
-import 'package:hypnose/app/services/user_service.dart';
+import 'package:hypnose/app/ui/widgets/audio_recprding_console.dart';
+import 'package:hypnose/app/ui/widgets/get_audio_button.dart';
 import 'package:hypnose/app/ui/widgets/min_audio_player_console.dart';
 import 'package:hypnose/app/ui/widgets/page_move_button.dart';
 import 'package:hypnose/app/ui/widgets/upload_fire.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class AudioPickRecordPage extends StatefulWidget {
   final PageController controller;
@@ -82,8 +80,7 @@ class _AudioPickRecordPageState extends State<AudioPickRecordPage> {
                 MinAudioPlayerConsole(
                   audioUtilService: audioUtilService,
                 ),
-              if (audioUtilService.audioFilePath != null)
-                UploadFireWidget(),
+              if (audioUtilService.audioFilePath != null) UploadFireWidget(),
               PageMoveButton(
                 controller: this.widget.controller,
                 isContinue: false,
@@ -95,82 +92,16 @@ class _AudioPickRecordPageState extends State<AudioPickRecordPage> {
     );
   }
 
-  Container buildRecordingConsole(
+  Widget buildRecordingConsole(
       BuildContext context, AudioUtilService audioUtilService) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      child: Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              SpinKitRipple(
-                color: Colors.teal,
-                size: 50,
-              ),
-              Text(
-                'Now Recording',
-                style: TextStyle(fontSize: 20),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: RaisedButton.icon(
-              color: Theme.of(context).primaryColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0)),
-              onPressed: () async {
-                await audioUtilService.stopAudioRecording();
-              },
-              icon: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(
-                  Icons.stop,
-                  color: Colors.white,
-                ),
-              ),
-              label: Text(
-                'Stop Recording',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+    return AudioRecordingConsole(audioUtilService: audioUtilService);
   }
 
   Widget buildGetAudioButton(
       BuildContext context, AudioUtilService audioUtilService) {
-    return Container(
-      alignment: Alignment.center,
-      child: RaisedButton.icon(
-        color: Theme.of(context).primaryColor,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-        icon: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
-          child: Icon(
-              _shouldPickFromPhone
-                  ? FontAwesomeIcons.fileAudio
-                  : FontAwesomeIcons.microphoneAlt,
-              color: Colors.white),
-        ),
-        onPressed: () async {
-          _shouldPickFromPhone
-              ? await audioUtilService.pickAudiofromDevice()
-              : await audioUtilService.startAudioRecorder();
-        },
-        label: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5),
-          child:
-              Text(_shouldPickFromPhone ? 'Choose Audio File' : 'Record Audio',
-                  style: TextStyle(
-                    color: Colors.white,
-                  )),
-        ),
-      ),
+    return GetAudioButton(
+      shouldPickFromPhone: _shouldPickFromPhone,
+      audioUtilService: audioUtilService,
     );
   }
 }
