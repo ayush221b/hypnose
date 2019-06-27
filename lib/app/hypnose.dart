@@ -48,7 +48,7 @@ class _HypnoseAppState extends State<HypnoseApp> {
           theme: ThemeData(primarySwatch: Colors.teal),
           darkTheme: ThemeData.dark(),
           initialRoute: '/',
-          routes: buildNamedRoutes()),
+          routes: buildNamedRoutes(userService: _userService)),
     );
   }
 }
