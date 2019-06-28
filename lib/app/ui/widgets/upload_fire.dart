@@ -36,6 +36,7 @@ class UploadFireWidget extends StatelessWidget {
                       Map<String, dynamic> map = audioUtilService.audioMap;
 
                       map['uploaderUid'] = userService.loggedInUser.uid;
+                      map['dateTime'] = DateTime.now();
 
                       await hostService.uploadToStorage(
                           uri: audioUtilService.audioFilePath, isAudio: true);
@@ -48,6 +49,10 @@ class UploadFireWidget extends StatelessWidget {
                         await hostService.updateFirestoreEntry(
                             isAudio: true,
                             objectMap: audioUtilService.audioMap);
+                        
+                        audioUtilService.clearPreviousAudioData();
+
+                        Navigator.pop(context);
                       }
                     },
                   ),

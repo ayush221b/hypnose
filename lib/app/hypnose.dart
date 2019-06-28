@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hypnose/app/routes/route_manager.dart';
+import 'package:hypnose/app/services/audio_fetch_service.dart';
 import 'package:hypnose/app/services/host_service.dart';
 import 'package:hypnose/app/services/audio_util_service.dart';
 import 'package:hypnose/app/services/user_service.dart';
 import 'package:hypnose/app/static/globals.dart';
-import 'package:hypnose/app/ui/pages/audio_create.dart';
-import 'package:hypnose/app/ui/pages/home_switcher.dart';
-import 'package:hypnose/app/ui/pages/welcome_screen.dart';
 import 'package:provider/provider.dart';
 
 class HypnoseApp extends StatefulWidget {
@@ -18,6 +16,7 @@ class _HypnoseAppState extends State<HypnoseApp> {
   UserService _userService;
   AudioUtilService _audioUtilService;
   HostService _hostService;
+  AudioFetchService _audioFetchService;
 
   @override
   void initState() {
@@ -26,6 +25,7 @@ class _HypnoseAppState extends State<HypnoseApp> {
     _userService = UserService();
     _audioUtilService = AudioUtilService();
     _hostService = HostService();
+    _audioFetchService = AudioFetchService();
   }
 
   @override
@@ -40,6 +40,9 @@ class _HypnoseAppState extends State<HypnoseApp> {
         ),
         ChangeNotifierProvider<HostService>(
           builder: (_) => _hostService,
+        ),
+        ChangeNotifierProvider<AudioFetchService>(
+          builder: (_) => _audioFetchService,
         )
       ],
       child: MaterialApp(

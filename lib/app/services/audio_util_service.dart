@@ -18,6 +18,11 @@ class AudioUtilService extends ChangeNotifier {
     return _audioFilePath;
   }
 
+  // Get the URI that is currently being played
+  String _currentlyPlayingUri;
+
+  String get currentlyPlayingUri => _currentlyPlayingUri;
+
   // Map to store all details of audio
   Map<String, dynamic> _audioMap = {};
 
@@ -75,19 +80,30 @@ class AudioUtilService extends ChangeNotifier {
     notifyListeners();
   }
 
+  // function to clear previously recorded audio data
+  void clearPreviousAudioData() {
+    _audioFilePath = null;
+    _playerMessage = null;
+  }
+
   // start playback of audio from @param uri
   Future startAudioPlayback(String uri) async {
     _isPlaying = true;
+    _currentlyPlayingUri = uri;
     notifyListeners();
 
     await audioPlayer.play(uri, isLocal: true);
 
     audioPlayer.onPlayerStateChanged.listen((AudioPlayerState s) {
       print('Current player state: $s');
-      if (s == AudioPlayerState.PLAYING)
+      if (s == AudioPlayerState.PLAYING) {
         _isPlaying = true;
-      else
+      } else if (s == AudioPlayerState.COMPLETED) {
         _isPlaying = false;
+        _currentlyPlayingUri = null;
+      } else {
+        _isPlaying = false;
+      }
       notifyListeners();
     });
   }
@@ -96,6 +112,7 @@ class AudioUtilService extends ChangeNotifier {
   Future stopAudioPlayback() async {
     await audioPlayer.stop();
     _isPlaying = false;
+    _currentlyPlayingUri = null;
     notifyListeners();
   }
 

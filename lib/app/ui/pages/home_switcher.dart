@@ -41,7 +41,7 @@ class HomePageSwitcher extends StatelessWidget {
                   ),
                 ),
                 ListTile(
-                  onTap: () => Navigator.pushNamed(context, '/audiocreate'),
+                  onTap: () => Navigator.pushNamed(context, '/myaudios'),
                   leading: Icon(FontAwesomeIcons.microphone),
                   title: Text(
                     'Audios',
