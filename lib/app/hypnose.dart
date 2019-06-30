@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hypnose/app/routes/route_manager.dart';
-import 'package:hypnose/app/services/audio_fetch_service.dart';
+import 'package:hypnose/app/services/fetch_service.dart';
 import 'package:hypnose/app/services/host_service.dart';
 import 'package:hypnose/app/services/audio_util_service.dart';
 import 'package:hypnose/app/services/pitcure_util_service.dart';
@@ -17,7 +17,7 @@ class _HypnoseAppState extends State<HypnoseApp> {
   UserService _userService;
   AudioUtilService _audioUtilService;
   HostService _hostService;
-  AudioFetchService _audioFetchService;
+  FetchService _fetchService;
   PictureUtilService _pictureUtilService;
 
   @override
@@ -27,7 +27,7 @@ class _HypnoseAppState extends State<HypnoseApp> {
     _userService = UserService();
     _audioUtilService = AudioUtilService();
     _hostService = HostService();
-    _audioFetchService = AudioFetchService();
+    _fetchService = FetchService();
     _pictureUtilService = PictureUtilService();
   }
 
@@ -44,8 +44,8 @@ class _HypnoseAppState extends State<HypnoseApp> {
         ChangeNotifierProvider<HostService>(
           builder: (_) => _hostService,
         ),
-        ChangeNotifierProvider<AudioFetchService>(
-          builder: (_) => _audioFetchService,
+        ChangeNotifierProvider<FetchService>(
+          builder: (_) => _fetchService,
         ),
         ChangeNotifierProvider<PictureUtilService>(
           builder: (_) => _pictureUtilService,
