@@ -24,24 +24,33 @@ class _WelcomeViewState extends State<WelcomeView> {
     super.initState();
 
     // Listen to changes in authState and react accordingly
-    this.widget.userService.authStateSubject.listen((AuthState authState) {
-      print(authState);
-      if (authState == AuthState.Unauthenticated) {
-        setState(() {
-          viewWidget = LoginScreenWidget();
-        });
-      } else if (authState == AuthState.Processing) {
-        setState(() {
-          viewWidget = LoadingScreenWidget();
-        });
-      } else {
-        // Navigate to the home switcher page if authState is authenticated.
-        Navigator.pushNamed(context, '/home');
-      }
-    });
+    if (mounted) {
+      this.widget.userService.authStateSubject.listen((AuthState authState) {
+        print(authState);
+        if (authState == AuthState.Unauthenticated) {
+          setState(() {
+            viewWidget = LoginScreenWidget();
+          });
+        } else if (authState == AuthState.Processing) {
+          setState(() {
+            viewWidget = LoadingScreenWidget();
+          });
+        } else {
+          // Navigate to the home switcher page if authState is authenticated.
+          Navigator.pushNamed(context, '/home');
+        }
+      });
+    }
 
     // Attempt to auto-authenticate user
     this.widget.userService.autoAuthenticateUser();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    this.widget.userService.authStateSubject.close();
   }
 
   @override

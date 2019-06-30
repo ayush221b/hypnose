@@ -122,6 +122,7 @@ class UserService extends ChangeNotifier {
     _authStateSubject.add(AuthState.Processing);
 
     await _auth.signOut();
+    await _googleSignIn.signOut();
 
     _loggedInUser = null;
 

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hypnose/app/routes/route_manager.dart';
+import 'package:hypnose/app/services/audio_fetch_service.dart';
+import 'package:hypnose/app/services/host_service.dart';
+import 'package:hypnose/app/services/audio_util_service.dart';
 import 'package:hypnose/app/services/user_service.dart';
 import 'package:hypnose/app/static/globals.dart';
-import 'package:hypnose/app/ui/pages/home_switcher.dart';
-import 'package:hypnose/app/ui/pages/welcome_screen.dart';
 import 'package:provider/provider.dart';
 
 class HypnoseApp extends StatefulWidget {
@@ -11,26 +13,45 @@ class HypnoseApp extends StatefulWidget {
 }
 
 class _HypnoseAppState extends State<HypnoseApp> {
+  UserService _userService;
+  AudioUtilService _audioUtilService;
+  HostService _hostService;
+  AudioFetchService _audioFetchService;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _userService = UserService();
+    _audioUtilService = AudioUtilService();
+    _hostService = HostService();
+    _audioFetchService = AudioFetchService();
+  }
+
   @override
   Widget build(BuildContext context) {
-    UserService userService = UserService();
-
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<UserService>.value(
-          value: userService,
+        ChangeNotifierProvider<UserService>(
+          builder: (_) => _userService,
         ),
+        ChangeNotifierProvider<AudioUtilService>(
+          builder: (_) => _audioUtilService,
+        ),
+        ChangeNotifierProvider<HostService>(
+          builder: (_) => _hostService,
+        ),
+        ChangeNotifierProvider<AudioFetchService>(
+          builder: (_) => _audioFetchService,
+        )
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: Globals.title,
-          theme: ThemeData(primarySwatch: Colors.cyan),
+          theme: ThemeData(primarySwatch: Colors.teal),
           darkTheme: ThemeData.dark(),
           initialRoute: '/',
-          routes: {
-            '/': (BuildContext context) => WelcomeScreen(userService),
-            '/home': (BuildContext context) => HomePageSwitcher(),
-          }),
+          routes: buildNamedRoutes(userService: _userService)),
     );
   }
 }

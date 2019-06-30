@@ -1,34 +1,38 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Audio {
   String id; // Firestore id of audio
-  String name; // Name of audio file, as specified by admin
+  String title; // title of audio file, as specified by admin
   String description; // Description as provided by admin
-  String url; // Firebase storage URL of audio
+  String downloadUrl; // Firebase storage downloadUrl of audio
   String category; // category of Audio, defined by admin
-  DateTime dateTime; // Date and time when the audio was added
+  Timestamp dateTime; // Date and time when the audio was added
   String userUid; // (Optional) The UID of the user to which the audio was assigned
+  String uploaderUid; // UID of the admin who uploaded the file
 
   Audio({
       @required this.id,
-      @required this.name,
+      @required this.title,
       @required this.description,
-      @required this.url,
+      @required this.downloadUrl,
       @required this.category,
       @required this.dateTime,
-      @required this.userUid
+      @required this.userUid,
+      @required this.uploaderUid
       });
 
   // Accepts a map and helps in generating an Audio instance
   Audio.fromMap(Map dataMap){
 
     id = dataMap['id'];
-    name = dataMap['name'];
+    title = dataMap['title'];
     description = dataMap['description'];
-    url = dataMap['url'];
-    category = dataMap['category'];
-    dateTime = DateTime.parse(dataMap['dateTime']);
-    userUid = dataMap['userUid'];
+    downloadUrl = dataMap['downloadUrl'];
+    category = dataMap['category'] ?? null;
+    dateTime = dataMap['dateTime'];
+    userUid = dataMap['userUid'] ?? null;
+    uploaderUid = dataMap['uploaderUid'];
   }
 
   // Helper function to convert an Audio instance into a map
@@ -37,12 +41,13 @@ class Audio {
     var audioMap = Map<String, dynamic>();
 
     audioMap['id'] = id;
-    audioMap['name'] = name;
+    audioMap['title'] = title;
     audioMap['description'] = description;
-    audioMap['url'] = url;
-    audioMap['category'] = category;
-    audioMap['dateTime'] = dateTime.toString();
-    audioMap['userUid'] = userUid;
+    audioMap['downloadUrl'] = downloadUrl;
+    audioMap['category'] = category ?? null;
+    audioMap['dateTime'] = dateTime;
+    audioMap['userUid'] = userUid ?? null;
+    audioMap['uploaderUid'] = uploaderUid;
 
     return audioMap;
   }

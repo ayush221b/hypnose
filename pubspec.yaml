@@ -14,7 +14,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -31,8 +31,11 @@ dependencies:
   # Firebase Cloud Firestore
   cloud_firestore: ^0.12.3
 
+  # For cloud storage of content
+  firebase_storage: ^3.0.1
+
   # For Network Interaction
-  http: ^0.12.0+2
+  #http: ^0.12.0+2
 
   # For state management
   provider: ^3.0.0
@@ -42,6 +45,25 @@ dependencies:
 
   # Helps with Reactive programming
   rxdart: ^0.22.0
+
+  # Cache network images offline
+  cached_network_image: ^0.8.0
+
+  # To use internationalised formats
+  intl: ^0.15.8
+
+  # To pick files from System
+  file_picker: ^1.3.5
+
+  # Beautiful progress animations 
+  flutter_spinkit: "^3.1.0"
+
+  # To play Audio files (Remote and local)
+  audioplayers:
+
+  # To record audio
+  audio_recorder:
+    path: ../audio_recorder/
 
 dev_dependencies:
   flutter_test:
