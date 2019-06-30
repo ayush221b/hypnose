@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:hypnose/app/services/audio_util_service.dart';
+import 'package:hypnose/app/services/pitcure_util_service.dart';
 import 'package:hypnose/app/ui/widgets/page_move_button.dart';
 import 'package:provider/provider.dart';
 
-class AudioTitleDescriptionPage extends StatefulWidget {
-  const AudioTitleDescriptionPage({
-    Key key,
-    @required PageController controller,
-  })  : _controller = controller,
-        super(key: key);
+class TitleDescriptionPage extends StatefulWidget {
+  final PageController controller;
+  final bool isAudio;
 
-  final PageController _controller;
+  const TitleDescriptionPage({this.controller, this.isAudio=true});
 
   @override
-  _AudioTitleDescriptionPageState createState() =>
-      _AudioTitleDescriptionPageState();
+  _TitleDescriptionPageState createState() => _TitleDescriptionPageState();
 }
 
-class _AudioTitleDescriptionPageState extends State<AudioTitleDescriptionPage> {
+class _TitleDescriptionPageState extends State<TitleDescriptionPage> {
   TextEditingController _titleCtrl = TextEditingController();
   TextEditingController _descCtrl = TextEditingController();
 
@@ -34,22 +31,21 @@ class _AudioTitleDescriptionPageState extends State<AudioTitleDescriptionPage> {
     myTitleFocusNode = FocusNode();
     myDescriptionFocusNode = FocusNode();
 
-    myTitleFocusNode.addListener((){
-      if(myTitleFocusNode.hasFocus) {
+    myTitleFocusNode.addListener(() {
+      if (myTitleFocusNode.hasFocus) {
         setState(() {
           titleErrorText = null;
         });
       }
     });
 
-    myDescriptionFocusNode.addListener((){
-      if(myDescriptionFocusNode.hasFocus) {
+    myDescriptionFocusNode.addListener(() {
+      if (myDescriptionFocusNode.hasFocus) {
         setState(() {
           descriptionErrorText = null;
         });
       }
     });
-
   }
 
   @override
@@ -93,13 +89,24 @@ class _AudioTitleDescriptionPageState extends State<AudioTitleDescriptionPage> {
         titleErrorText = null;
         descriptionErrorText = null;
       });
-      var audioUtilService = Provider.of<AudioUtilService>(context);
-      Map<String, dynamic> map = audioUtilService.audioMap;
 
-      map['title'] = _titleCtrl.text;
-      map['description'] = _descCtrl.text;
+      if (this.widget.isAudio) {
+        var audioUtilService = Provider.of<AudioUtilService>(context);
+        Map<String, dynamic> map = audioUtilService.audioMap;
 
-      audioUtilService.audioMap = map;
+        map['title'] = _titleCtrl.text;
+        map['description'] = _descCtrl.text;
+
+        audioUtilService.audioMap = map;
+      } else {
+        var pictureUtilService = Provider.of<PictureUtilService>(context);
+        Map<String, dynamic> map = pictureUtilService.imageMap;
+
+        map['title'] = _titleCtrl.text;
+        map['description'] = _descCtrl.text;
+
+        pictureUtilService.imageMap = map;
+      }
     }
 
     return shouldProceed;
@@ -123,7 +130,7 @@ class _AudioTitleDescriptionPageState extends State<AudioTitleDescriptionPage> {
             margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 8.0),
             padding: EdgeInsets.all(8.0),
             child: Text(
-              'Add the Title and Description for the new Audio',
+              'Add the Title and Description',
               style: TextStyle(fontFamily: 'OpenSans', fontSize: 20),
             )),
         Container(
@@ -133,7 +140,7 @@ class _AudioTitleDescriptionPageState extends State<AudioTitleDescriptionPage> {
               controller: _titleCtrl,
               focusNode: myTitleFocusNode,
               decoration: InputDecoration(
-                  labelText: 'Title of Audio',
+                  labelText: 'Title',
                   errorText:
                       !myTitleFocusNode.hasFocus ? titleErrorText : null),
             )),
@@ -145,13 +152,13 @@ class _AudioTitleDescriptionPageState extends State<AudioTitleDescriptionPage> {
               focusNode: myDescriptionFocusNode,
               maxLines: 4,
               decoration: InputDecoration(
-                  labelText: 'Description of Audio',
+                  labelText: 'Description',
                   errorText: !myDescriptionFocusNode.hasFocus
                       ? descriptionErrorText
                       : null),
             )),
         PageMoveButton(
-          controller: widget._controller,
+          controller: widget.controller,
           specialFunction: validateFields,
           isContinue: true,
         )

@@ -49,6 +49,7 @@ class HomePageSwitcher extends StatelessWidget {
                   ),
                 ),
                 ListTile(
+                  onTap: () => Navigator.pushNamed(context, '/mypictures'),
                   leading: Icon(FontAwesomeIcons.images),
                   title: Text(
                     'Pictures',

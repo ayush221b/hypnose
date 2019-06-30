@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Picture {
@@ -6,7 +7,8 @@ class Picture {
   String description; // Description as provided by admin
   String url; // Firebase storage URL of picture
   String category; // category of picture, defined by admin
-  DateTime dateTime; // Date and time when the picture was added
+  Timestamp dateTime; // Date and time when the picture was added
+  String uploaderUid; // UID of admin who uploaded the picture
 
   Picture({
     @required this.id,
@@ -15,6 +17,7 @@ class Picture {
     @required this.url,
     @required this.category,
     @required this.dateTime,
+    @required this.uploaderUid,
   });
 
   // Accepts a map and helps in generating an picture instance
@@ -24,7 +27,8 @@ class Picture {
     description = dataMap['description'];
     url = dataMap['url'];
     category = dataMap['category'];
-    dateTime = DateTime.parse(dataMap['dateTime']);
+    dateTime = dataMap['dateTime'];
+    uploaderUid = dataMap['uploaderUid'];
   }
 
   // Helper function to convert an picture instance into a map
@@ -37,6 +41,7 @@ class Picture {
     pictureMap['url'] = url;
     pictureMap['category'] = category;
     pictureMap['dateTime'] = dateTime.toString();
+    pictureMap['uploaderUid'] = uploaderUid;
 
     return pictureMap;
   }
