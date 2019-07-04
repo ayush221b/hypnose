@@ -20,8 +20,7 @@ class MyAudiosView extends StatelessWidget {
             builder:
                 (BuildContext context, UserService userService, Widget child) {
               return StreamBuilder(
-                stream: fetchService.getContentUploadedByCurrentAdmin(
-                    contentType: 'audios',
+                stream: fetchService.getAudiosUploadedByCurrentAdmin(
                     uploaderUid: userService.loggedInUser.uid),
                 initialData: [],
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
