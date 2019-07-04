@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hypnose/app/ui/widgets/audio_assign.dart';
+import 'package:hypnose/app/ui/widgets/content_assign.dart';
 import 'package:hypnose/app/ui/widgets/audio_record_pick.dart';
-import 'package:hypnose/app/ui/widgets/audio_title_desc.dart';
+import 'package:hypnose/app/ui/widgets/title_desc.dart';
 
 class AudioCreateView extends StatefulWidget {
   @override
@@ -22,9 +22,12 @@ class _AudioCreateViewState extends State<AudioCreateView> {
         controller: _controller,
         physics: NeverScrollableScrollPhysics(),
         children: [
-          AudioTitleDescriptionPage(controller: _controller),
+          TitleDescriptionPage(controller: _controller),
           // Second Page
-          AudiocategoryUserAssignPage(_controller),
+          ContentAssignPage(
+            controller: _controller,
+            isPicture: false,
+          ),
           //Third Page
           AudioPickRecordPage(_controller),
         ],

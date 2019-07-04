@@ -80,7 +80,10 @@ class _AudioPickRecordPageState extends State<AudioPickRecordPage> {
                 MinAudioPlayerConsole(
                   audioUtilService: audioUtilService,
                 ),
-              if (audioUtilService.audioFilePath != null) UploadFireWidget(),
+              if (audioUtilService.audioFilePath != null)
+                UploadFireWidget(
+                  isAudio: true,
+                ),
               PageMoveButton(
                 controller: this.widget.controller,
                 isContinue: false,

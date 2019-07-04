@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hypnose/app/models/audio.dart';
-import 'package:hypnose/app/services/audio_fetch_service.dart';
+import 'package:hypnose/app/services/fetch_service.dart';
 import 'package:hypnose/app/services/user_service.dart';
 import 'package:hypnose/app/ui/widgets/audios_list_card.dart';
 import 'package:provider/provider.dart';
@@ -13,14 +13,14 @@ class MyAudiosView extends StatelessWidget {
         title: Text('Your Audios'),
         automaticallyImplyLeading: true,
       ),
-      body: Consumer<AudioFetchService>(
-        builder: (BuildContext context, AudioFetchService audioFetchService,
-            Widget child) {
+      body: Consumer<FetchService>(
+        builder:
+            (BuildContext context, FetchService fetchService, Widget child) {
           return Consumer<UserService>(
             builder:
                 (BuildContext context, UserService userService, Widget child) {
               return StreamBuilder(
-                stream: audioFetchService.getAudiosUploadedByCurrentAdmin(
+                stream: fetchService.getAudiosUploadedByCurrentAdmin(
                     uploaderUid: userService.loggedInUser.uid),
                 initialData: [],
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
