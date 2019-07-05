@@ -27,16 +27,9 @@ class HomePageSwitcher extends StatelessWidget {
                   ),
                 ),
                 ListTile(
-                  leading: Icon(FontAwesomeIcons.userAstronaut),
-                  title: Text(
-                    'My Profile',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-                ListTile(
                   leading: Icon(FontAwesomeIcons.userFriends),
                   title: Text(
-                    'Appointments',
+                    'Agenda',
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
@@ -53,6 +46,16 @@ class HomePageSwitcher extends StatelessWidget {
                   leading: Icon(FontAwesomeIcons.images),
                   title: Text(
                     'Pictures',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+                ListTile(
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/settings_admin');
+                  },
+                  leading: Icon(Icons.settings),
+                  title: Text(
+                    'Settings',
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
