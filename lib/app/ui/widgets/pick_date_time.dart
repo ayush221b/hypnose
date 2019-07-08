@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hypnose/app/services/agenda_service.dart';
+import 'package:provider/provider.dart';
 
 class PickDateTimeButton extends StatefulWidget {
   @override
@@ -36,6 +38,7 @@ class _PickDateTimeButtonState extends State<PickDateTimeButton> {
 
   @override
   Widget build(BuildContext context) {
+    var agendaService = Provider.of<AgendaService>(context);
     return RaisedButton.icon(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
       color: Theme.of(context).primaryColor,
@@ -51,12 +54,14 @@ class _PickDateTimeButtonState extends State<PickDateTimeButton> {
         await _selectDate(context);
         await _selectTime(context);
 
-        print(_selectedDate);
-        print(_selectedTime);
-
         DateTime dateTime = _selectedDate.add(
             Duration(hours: _selectedTime.hour, minutes: _selectedTime.minute));
-        
+
+        Map<String, dynamic> map = agendaService.appointmentMap;
+
+        map['dateTime'] = dateTime;
+
+        agendaService.appointmentMap = map;
       },
     );
   }

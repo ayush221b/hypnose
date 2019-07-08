@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hypnose/app/routes/route_manager.dart';
+import 'package:hypnose/app/services/agenda_service.dart';
 import 'package:hypnose/app/services/categories_service.dart';
 import 'package:hypnose/app/services/fetch_service.dart';
 import 'package:hypnose/app/services/host_service.dart';
@@ -21,6 +22,7 @@ class _HypnoseAppState extends State<HypnoseApp> {
   FetchService _fetchService;
   PictureUtilService _pictureUtilService;
   CategoriesService _categoriesService;
+  AgendaService _agendaService;
 
   @override
   void initState() {
@@ -32,6 +34,7 @@ class _HypnoseAppState extends State<HypnoseApp> {
     _fetchService = FetchService();
     _pictureUtilService = PictureUtilService();
     _categoriesService = CategoriesService();
+    _agendaService = AgendaService();
   }
 
   @override
@@ -55,6 +58,9 @@ class _HypnoseAppState extends State<HypnoseApp> {
         ),
         ChangeNotifierProvider<CategoriesService>(
           builder: (_) => _categoriesService,
+        ),
+        ChangeNotifierProvider<AgendaService>(
+          builder: (_) => _agendaService,
         )
       ],
       child: MaterialApp(
