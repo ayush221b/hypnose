@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hypnose/app/services/user_service.dart';
+import 'package:hypnose/app/ui/pages/appointment_create_page.dart';
+import 'package:hypnose/app/ui/pages/appointment_page.dart';
 import 'package:hypnose/app/ui/pages/audio_create.dart';
 import 'package:hypnose/app/ui/pages/home_switcher.dart';
 import 'package:hypnose/app/ui/pages/my_audios_screen.dart';
@@ -17,6 +19,8 @@ Map<String, WidgetBuilder> buildNamedRoutes({UserService userService}) {
     '/mypictures': (BuildContext context) => MyPicturesScreen(),
     '/picturecreate': (BuildContext context) => PicturesCreateScreen(),
     '/settings_admin': (BuildContext context) => AdminSettingsPage(),
+    '/appointment_view': (BuildContext context) => AppointmentPage(),
+    '/appointment_create': (BuildContext context) => AppointmentCreatePage(),
   };
 
   return namedRoutes;

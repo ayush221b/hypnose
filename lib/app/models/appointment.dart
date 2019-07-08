@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:meta/meta.dart';
 
 class Appointment {
@@ -5,7 +6,7 @@ class Appointment {
   String userUid; // UID of user 
   String adminUid; // UID of admin
   String description; // Description of appointment
-  DateTime dateTime; // Date and Time of Appointment
+  Timestamp dateTime; // Date and Time of Appointment
 
   Appointment({
     @required this.userUid,
@@ -20,7 +21,7 @@ class Appointment {
     userUid = dataMap['userUid'];
     adminUid = dataMap['adminUid'];
     description = dataMap['description'];
-    dateTime = DateTime.parse(dataMap['dateTime']);
+    dateTime = dataMap['dateTime'];
   }
 
   // Helper function for creating map from Appointment instance
