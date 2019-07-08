@@ -27,7 +27,7 @@ class HomePageSwitcher extends StatelessWidget {
                   ),
                 ),
                 ListTile(
-                  onTap: () => Navigator.pushNamed(context, '/appointment_create'),
+                  onTap: () => Navigator.pushNamed(context, '/appointment_view'),
                   leading: Icon(FontAwesomeIcons.userFriends),
                   title: Text(
                     'Agenda',

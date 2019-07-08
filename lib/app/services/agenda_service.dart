@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hypnose/app/models/appointment.dart';
 
 class AgendaService extends ChangeNotifier {
   Map<String, dynamic> _appointmentMap = {};
@@ -26,5 +27,19 @@ class AgendaService extends ChangeNotifier {
 
     _isLoading = false;
     notifyListeners();
+  }
+
+  Stream getAgenda({@required adminUid}) {
+    Query query = db
+        .collection('appointment')
+        .where('adminUid', isEqualTo: adminUid)
+        .orderBy('dateTime', descending: true);
+    Stream appointments =
+        query.snapshots().map((list) => list.documents.map((doc) {
+              Appointment appointment = Appointment.fromMap(doc.data);
+              return appointment;
+            }));
+
+    return appointments;
   }
 }

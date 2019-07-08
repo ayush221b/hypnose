@@ -54,8 +54,10 @@ class _PickDateTimeButtonState extends State<PickDateTimeButton> {
         await _selectDate(context);
         await _selectTime(context);
 
-        DateTime dateTime = _selectedDate.add(
-            Duration(hours: _selectedTime.hour, minutes: _selectedTime.minute));
+        DateTime dateTime = DateTime(_selectedDate.year, _selectedDate.month,
+            _selectedDate.day, _selectedTime.hour, _selectedTime.minute);
+
+        print(dateTime);
 
         Map<String, dynamic> map = agendaService.appointmentMap;
 

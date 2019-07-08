@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hypnose/app/services/agenda_service.dart';
 import 'package:hypnose/app/services/user_service.dart';
 import 'package:hypnose/app/ui/widgets/pick_date_time.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class AppointmentCreateView extends StatefulWidget {
@@ -105,7 +106,12 @@ class _AppointmentCreateViewState extends State<AppointmentCreateView> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: PickDateTimeButton(),
+                child: agendaService.appointmentMap['dateTime'] == null
+                    ? PickDateTimeButton()
+                    : Text(
+                        '${DateFormat.yMMMMd().format(agendaService.appointmentMap['dateTime'])}  ${agendaService.appointmentMap['dateTime'].hour}:${agendaService.appointmentMap['dateTime'].minute}',
+                        style: TextStyle(fontSize: 20),
+                      ),
               ),
             ],
           ),
